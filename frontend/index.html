@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Campus Connect</title>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<div id="app" class="app-shell">
+
+  <!-- ============ LOGIN VIEW ============ -->
+  <section id="view-login" class="view view-login">
+    <div class="login-card">
+      <div class="login-mark">CC</div>
+      <h1 class="login-title">Campus Connect</h1>
+      <p class="login-sub">Sign in with your roll number</p>
+
+      <form id="login-form" class="login-form">
+        <label class="field-label" for="login-rollno">Roll Number</label>
+        <input id="login-rollno" class="field-input" type="text" placeholder="e.g. 12216312" autocomplete="username" required />
+
+        <label class="field-label" for="login-password">Password</label>
+        <input id="login-password" class="field-input" type="password" placeholder="Enter your password" autocomplete="current-password" required />
+
+        <p id="login-error" class="form-error" hidden></p>
+
+        <button type="submit" class="btn-primary btn-block">Log In</button>
+      </form>
+
+      <p class="login-hint">Demo: roll 12216312 · password student123</p>
+    </div>
+  </section>
+
+  <!-- ============ MAIN APP (post-login) ============ -->
+  <div id="main-app" class="main-app" hidden>
+
+    <!-- Top bar -->
+    <header class="topbar">
+      <button id="btn-open-menu" class="icon-btn" aria-label="Open menu">
+        <svg width="22" height="16" viewBox="0 0 22 16" fill="none"><path d="M1 2H21M1 8H21M1 14H14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </button>
+      <h1 id="topbar-title" class="topbar-title">Dashboard</h1>
+      <button id="btn-open-notifications" class="icon-btn notif-btn" aria-label="Notifications">
+        <svg width="20" height="22" viewBox="0 0 20 22" fill="none"><path d="M10 1C6.7 1 4 3.7 4 7v4.5c0 1-.4 2-1.1 2.7L2 15h16l-.9-.8c-.7-.7-1.1-1.7-1.1-2.7V7c0-3.3-2.7-6-6-6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7.5 18a2.5 2.5 0 0 0 5 0" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span id="notif-badge" class="notif-badge" hidden>0</span>
+      </button>
+    </header>
+
+    <!-- Scrollable content area; each "page" is a section toggled via JS -->
+    <main id="content" class="content"></main>
+
+    <!-- Bottom tab nav -->
+    <nav class="bottom-nav">
+      <button class="nav-item is-active" data-page="dashboard">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="1" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="11" y="1" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="1" y="11" width="8" height="8" rx="1.5" fill="currentColor"/><rect x="11" y="11" width="8" height="8" rx="1.5" fill="currentColor"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" data-page="happenings">
+        <svg width="18" height="20" viewBox="0 0 18 20" fill="none"><rect x="1" y="1" width="16" height="18" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M4.5 6h9M4.5 10h9M4.5 14h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>Happenings</span>
+      </button>
+      <button class="nav-item" data-page="rms">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 16V2h10l4 4v10H2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M5 10l2 2 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>RMS</span>
+      </button>
+      <button class="nav-item" data-page="marks">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 4h14M2 9h14M2 14h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>View Marks</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ============ PROFILE / SIDE MENU OVERLAY ============ -->
+  <div id="menu-overlay" class="overlay" hidden>
+    <div class="overlay-backdrop" data-close-menu></div>
+    <aside class="side-menu">
+      <div class="side-menu-header">
+        <img id="menu-avatar" class="menu-avatar" src="" alt="" />
+        <h2 id="menu-name" class="menu-name"></h2>
+        <p id="menu-roll" class="menu-roll"></p>
+        <p id="menu-program" class="menu-program"></p>
+      </div>
+      <div class="side-menu-search">
+        <input type="text" placeholder="Search" class="search-input" />
+      </div>
+      <ul class="side-menu-list">
+        <li data-page="attendance"><span class="menu-icon">📋</span>Attendance</li>
+        <li data-page="placement_scanner"><span class="menu-icon">▦</span>Placement Barcode Scanner</li>
+        <li data-page="book_appointment"><span class="menu-icon">🗓</span>Book Appointment</li>
+        <li data-page="transport"><span class="menu-icon">🚌</span>Transport Preference</li>
+        <li data-page="change_password"><span class="menu-icon">🔑</span>Change UMS Password</li>
+        <li data-page="marks"><span class="menu-icon">📄</span>View Marks</li>
+        <li data-page="event_attendance"><span class="menu-icon">📰</span>Event Attendance</li>
+        <li data-page="doctor_appointment"><span class="menu-icon">⚕</span>Doctor Appointment</li>
+      </ul>
+      <button id="btn-logout" class="btn-logout">LOGOUT <span aria-hidden="true">&#8650;</span></button>
+    </aside>
+  </div>
+
+  <!-- ============ NOTIFICATIONS OVERLAY ("My Messages") ============ -->
+  <div id="notif-overlay" class="overlay" hidden>
+    <div class="notif-page">
+      <header class="dark-header">
+        <button class="icon-btn icon-btn-light" data-close-notif>
+          <svg width="20" height="16" viewBox="0 0 20 16" fill="none"><path d="M18 8H2M2 8l6-6M2 8l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h1 class="dark-header-title">My Messages</h1>
+        <span class="icon-btn icon-btn-light" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="1" y="3" width="18" height="16" rx="1.5" stroke="currentColor" stroke-width="1.6"/><path d="M1 8h18M6 1v4M14 1v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </span>
+      </header>
+      <div class="notif-search"><input type="text" placeholder="Search" class="search-input" /></div>
+      <div id="notif-list" class="notif-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Campus Connect — Admin</title>
+<link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<section id="admin-login-view" class="admin-login-view">
+  <form id="admin-login-form" class="admin-login-card">
+    <div class="admin-mark">CC</div>
+    <h1>Admin Panel</h1>
+    <p class="sub">Office of Director DCS</p>
+    <label>Username</label>
+    <input id="admin-username" type="text" placeholder="admin" autocomplete="username" required />
+    <label>Password</label>
+    <input id="admin-password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+    <p id="admin-login-error" class="error-text" hidden></p>
+    <button type="submit" class="btn-primary">Log In</button>
+    <p class="hint">Demo: admin / admin123</p>
+  </form>
+</section>
+
+<!-- ============ DASHBOARD ============ -->
+<div id="admin-app" class="admin-app" hidden>
+  <aside class="admin-sidebar">
+    <div class="admin-brand">Campus Connect<span>Admin</span></div>
+    <nav class="admin-nav">
+      <button class="admin-nav-item is-active" data-tab="attendance">Attendance</button>
+      <button class="admin-nav-item" data-tab="attendance-log">Attendance Log</button>
+      <button class="admin-nav-item" data-tab="marks">Marks</button>
+      <button class="admin-nav-item" data-tab="results">Results / GPA</button>
+      <button class="admin-nav-item" data-tab="timetable">Timetable</button>
+      <button class="admin-nav-item" data-tab="notifications">Notifications</button>
+      <button class="admin-nav-item" data-tab="tiles">Dashboard Tiles</button>
+    </nav>
+    <button id="admin-logout" class="admin-logout">Log Out</button>
+  </aside>
+
+  <main class="admin-main">
+
+    <!-- ===== ATTENDANCE TAB ===== -->
+    <section id="tab-attendance" class="admin-tab">
+      <h1 class="tab-title">Attendance</h1>
+      <p class="tab-sub">Update a student's attended/delivered count per subject. Changes are visible to the student immediately.</p>
+
+      <div class="toolbar">
+        <select id="att-student-select" class="select-input"></select>
+        <span id="att-aggregate-pill" class="pill"></span>
+      </div>
+
+      <div id="att-table-wrap"></div>
+
+      <h2 class="block-title">Or record today's class in one go</h2>
+      <p class="tab-sub">Pick a subject, choose who attended, and mark the whole session at once.</p>
+      <div class="session-form">
+        <select id="session-subject-select" class="select-input"></select>
+        <input id="session-date" type="date" class="select-input" />
+        <div id="session-student-checks" class="checks-grid"></div>
+        <button id="session-submit" class="btn-primary">Record Session</button>
+        <p id="session-feedback" class="feedback-text" hidden></p>
+      </div>
+    </section>
+
+    <!-- ===== ATTENDANCE LOG TAB ===== -->
+    <section id="tab-attendance-log" class="admin-tab" hidden>
+      <h1 class="tab-title">Attendance Log</h1>
+      <p class="tab-sub">Add individual class session records (date, time, present/absent, faculty). Each entry here automatically updates that subject's aggregate attended/delivered count too.</p>
+
+      <div class="toolbar">
+        <select id="log-student-select" class="select-input"></select>
+      </div>
+
+      <div id="log-table-wrap"></div>
+
+      <h2 class="block-title">Add a session entry</h2>
+      <form id="log-form" class="inline-form">
+        <select id="log-subject-select" class="select-input"></select>
+        <input id="log-date" type="date" class="select-input" required />
+        <input id="log-start" type="time" class="select-input" placeholder="Start time" />
+        <input id="log-end" type="time" class="select-input" placeholder="End time" />
+        <select id="log-status-select" class="select-input">
+          <option value="P">Present</option>
+          <option value="A">Absent</option>
+        </select>
+        <input id="log-faculty" type="text" placeholder="Faculty name (optional, defaults to subject's faculty)" class="select-input" />
+        <input id="log-faculty-uid" type="text" placeholder="Faculty UID (optional)" class="select-input" />
+        <button type="submit" class="btn-primary">Add Entry</button>
+      </form>
+      <p id="log-feedback" class="feedback-text" hidden></p>
+    </section>
+
+    <!-- ===== MARKS TAB ===== -->
+    <section id="tab-marks" class="admin-tab" hidden>
+      <h1 class="tab-title">Marks</h1>
+      <p class="tab-sub">Add or update marks for a student in a subject.</p>
+      <div class="toolbar">
+        <select id="marks-student-select" class="select-input"></select>
+      </div>
+      <div id="marks-table-wrap"></div>
+      <h2 class="block-title">Add / update a mark entry</h2>
+      <form id="marks-form" class="inline-form">
+        <select id="marks-subject-select" class="select-input"></select>
+        <input id="marks-exam-type" type="text" placeholder="Exam type (e.g. Mid Term)" class="select-input" required />
+        <input id="marks-obtained" type="number" placeholder="Marks obtained" class="select-input" min="0" required />
+        <input id="marks-max" type="number" placeholder="Max marks" class="select-input" min="1" required />
+        <input id="marks-grade" type="text" placeholder="Grade (optional)" class="select-input" />
+        <button type="submit" class="btn-primary">Save Mark</button>
+      </form>
+      <p id="marks-feedback" class="feedback-text" hidden></p>
+    </section>
+
+    <!-- ===== RESULTS / GPA TAB ===== -->
+    <section id="tab-results" class="admin-tab" hidden>
+      <h1 class="tab-title">Results / GPA</h1>
+      <p class="tab-sub">Set each course's final grade for a semester. TGPA and overall CGPA are calculated automatically from the credits and grades below — nothing to compute by hand.</p>
+
+      <div class="toolbar">
+        <select id="results-student-select" class="select-input"></select>
+        <span id="results-cgpa-pill" class="pill"></span>
+      </div>
+
+      <div id="results-table-wrap"></div>
+
+      <h2 class="block-title">Add / update a course grade</h2>
+      <form id="results-form" class="inline-form">
+        <input id="results-semester" type="number" placeholder="Semester number (e.g. 1)" class="select-input" min="1" max="12" required style="max-width: 200px;" />
+        <select id="results-subject-select" class="select-input"></select>
+        <select id="results-grade-select" class="select-input">
+          <option value="O">O — Outstanding</option>
+          <option value="A+">A+ — Excellent</option>
+          <option value="A">A — Very Good</option>
+          <option value="B+">B+ — Good</option>
+          <option value="B">B — Above Average</option>
+          <option value="C">C — Average</option>
+          <option value="D">D — Marginal</option>
+          <option value="F">F — Fail</option>
+        </select>
+        <input id="results-credits" type="number" placeholder="Credits (e.g. 3)" class="select-input" min="1" max="10" value="3" style="max-width: 160px;" />
+        <button type="submit" class="btn-primary">Save Grade</button>
+      </form>
+      <p id="results-feedback" class="feedback-text" hidden></p>
+    </section>
+
+    <!-- ===== TIMETABLE TAB ===== -->
+    <section id="tab-timetable" class="admin-tab" hidden>
+      <h1 class="tab-title">Timetable</h1>
+      <p class="tab-sub">Set up periods for a student's weekly schedule.</p>
+      <div class="toolbar">
+        <select id="tt-student-select" class="select-input"></select>
+      </div>
+      <div id="tt-table-wrap"></div>
+      <h2 class="block-title">Add a period</h2>
+      <form id="tt-form" class="inline-form">
+        <select id="tt-day-select" class="select-input">
+          <option>Monday</option><option>Tuesday</option><option>Wednesday</option>
+          <option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+        </select>
+        <select id="tt-subject-select" class="select-input"></select>
+        <input id="tt-start" type="time" class="select-input" required />
+        <input id="tt-end" type="time" class="select-input" required />
+        <select id="tt-period-type" class="select-input">
+          <option>Lecture</option><option>Practical</option><option>Tutorial</option>
+        </select>
+        <input id="tt-room" type="text" placeholder="Room (e.g. 55-702)" class="select-input" />
+        <input id="tt-group" type="number" placeholder="Group (e.g. 0)" class="select-input" min="0" style="max-width: 140px;" />
+        <input id="tt-section" type="text" placeholder="Section (e.g. ST001)" class="select-input" />
+        <button type="submit" class="btn-primary">Add Period</button>
+      </form>
+      <p id="tt-feedback" class="feedback-text" hidden></p>
+    </section>
+
+    <!-- ===== NOTIFICATIONS TAB ===== -->
+    <section id="tab-notifications" class="admin-tab" hidden>
+      <h1 class="tab-title">Notifications</h1>
+      <p class="tab-sub">Send a message to one student or broadcast to everyone.</p>
+      <form id="notif-form" class="inline-form">
+        <select id="notif-target" class="select-input">
+          <option value="broadcast">Broadcast to all students</option>
+        </select>
+        <input id="notif-title" type="text" placeholder="Title" class="select-input" required />
+        <textarea id="notif-body" placeholder="Message body" class="select-input textarea-input" required></textarea>
+        <input id="notif-sender" type="text" placeholder="Sender (optional, default: Office of Director DCS)" class="select-input" />
+        <button type="submit" class="btn-primary">Send</button>
+      </form>
+      <p id="notif-feedback" class="feedback-text" hidden></p>
+    </section>
+
+    <!-- ===== TILES TAB ===== -->
+    <section id="tab-tiles" class="admin-tab" hidden>
+      <h1 class="tab-title">Dashboard Tiles</h1>
+      <p class="tab-sub">Toggle which tiles appear on the student dashboard.</p>
+      <div id="tiles-list" class="tiles-admin-grid"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/admin.js"></script>
+</body>
+</html>

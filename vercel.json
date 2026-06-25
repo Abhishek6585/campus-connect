@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+
+    { "source": "/admin", "destination": "/admin/index.html" },
+    { "source": "/admin/", "destination": "/admin/index.html" },
+    { "source": "/admin/css/(.*)", "destination": "/admin/css/$1" },
+    { "source": "/admin/js/(.*)", "destination": "/admin/js/$1" },
+
+    { "source": "/css/(.*)", "destination": "/frontend/css/$1" },
+    { "source": "/js/(.*)", "destination": "/frontend/js/$1" },
+    { "source": "/", "destination": "/frontend/index.html" },
+    { "source": "/((?!api|admin|css|js).*)", "destination": "/frontend/index.html" }
+  ]
+}
